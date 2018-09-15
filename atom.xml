@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>幽人&#39;s Blog</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yourenit.top/"/>
+  <updated>2018-09-15T15:03:35.181Z</updated>
+  <id>http://yourenit.top/</id>
+  
+  <author>
+    <name>幽人</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++新特性之Lambda表达式</title>
+    <link href="http://yourenit.top/2018/09/14/C-%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8BLambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+    <id>http://yourenit.top/2018/09/14/C-新特性之Lambda表达式/</id>
+    <published>2018-09-14T04:28:37.000Z</published>
+    <updated>2018-09-15T15:03:35.181Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="什么是lambda表达式？"><a href="#什么是lambda表达式？" class="headerlink" title="什么是lambda表达式？"></a>什么是lambda表达式？</h3><p>一个<code>lambda</code>表达式表示以一个可以调用的代码单元。或者理解为一个匿名的内联函数。与任何函数类似，一个<code>lambda</code>具有返回类型、一个参数列表和一个函数体。与函数不同，<code>lambda</code>可能定义在函数内部。</p><h3 id="为什么要有lambda表达式？"><a href="#为什么要有lambda表达式？" class="headerlink" title="为什么要有lambda表达式？"></a>为什么要有lambda表达式？</h3><p>我们知道，在<code>STL</code>所提供的算法中，往往有两个版本。其中一个版本表现最直观的的某种运算，第二个版本则表现出最泛化的演算流程，允许用户“以<code>template</code>参数来指定所要采取的策略”。以<code>sort()</code>为例，第一版本是默认<strong>从小到大排序（operator&lt;）</strong>，第二个版本则是允许你指定某种“操作”，使得排序后的两个相邻元素都能令该操作结果为<code>true</code>。事实上，第二版本允许我们想算法传递任何类别的<strong>可调用对象</strong>。这个“可调用对象”为第二个版本的第三个参数，被称为“<strong>谓词</strong>”。</p><h4 id="可调用对象"><a href="#可调用对象" class="headerlink" title="可调用对象"></a>可调用对象</h4><p>C++的可调用对象有5类：</p><ol><li>函数</li><li>函数指针</li><li>重载了函数调用运算符的类</li><li>bind创建的对象</li><li><strong>lambda表达式</strong></li></ol><p>而在标准算法中将“谓词”分为两类：<strong>一元谓词（只接受一个参数）</strong>、<strong>二元谓词（接受两个参数）</strong>。</p><p>但是我们在使用一个算法中，要使用更多的参数，超出了谓词的限制，或者调用的函数有时候只用一次，重用性太差，那我们就要解决这些问题。</p><p><code>C++11</code>就引入了<code>lambda表达式</code>来解决这些问题。</p><h3 id="lambda表达式怎么用？"><a href="#lambda表达式怎么用？" class="headerlink" title="lambda表达式怎么用？"></a>lambda表达式怎么用？</h3><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. [captures](params) -&gt; return type &#123; function body &#125;</span><br><span class="line">2. [captures](params) &#123; function body &#125;</span><br><span class="line">3. [captures] &#123; function body &#125;</span><br></pre></td></tr></table></figure><p><code>captures</code>为捕获列表，为lambda中定义的局部变量的列表。</p><p><code>params</code>表示参数列表。</p><p><code>return type</code>表示返回类型，为尾随返回类型。</p><p><code>function body</code>为函数体。</p><p>上面三种用法中，我们可以看出来，<strong>参数列表</strong>和<strong>返回类型</strong>可以忽略，但是必须包含<strong>捕获列表</strong>和<strong>函数体</strong>。</p><h4 id="lambda-捕获"><a href="#lambda-捕获" class="headerlink" title="lambda 捕获"></a>lambda 捕获</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[]：lambda不能使用所在函数的变量。</span><br><span class="line">[=]：值捕获，lambda表达式可以以拷贝的方式访问函数中的变量的值。</span><br><span class="line">[&amp;]：引用捕获，lambda表达式中以引用的方式访问函数中的变量的值。</span><br><span class="line">[=,&amp;]：值捕获和引用捕获混合使用。</span><br><span class="line">[var]：指定捕获或拷贝。</span><br><span class="line">[this]：捕获this指针。</span><br></pre></td></tr></table></figure><h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">#include &lt;functional&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    std::vector&lt;int&gt; a=&#123;1,2,3,4,5&#125;;</span><br><span class="line">    std::for_each(a.begin(),a.end(),[](int i)&#123; std::cout&lt;&lt;i&lt;&lt;&quot; &quot;&#125;);</span><br><span class="line">    </span><br><span class="line">    //C++14 lambda可以拥有自身的默认参数</span><br><span class="line">    auto func=[](inr i=6)&#123;return i+4;&#125;;</span><br><span class="line">    std::cout&lt;&lt;func()&lt;&lt;std::endl;</span><br><span class="line">    </span><br><span class="line">    //值捕获和引用捕获</span><br><span class="line">    int b=1024,c=2048;</span><br><span class="line">    auto func2=[b,&amp;c]&#123;</span><br><span class="line">        std::cout&lt;&lt;i&lt;&lt;std::endl;</span><br><span class="line">        std::cout&lt;&lt;&amp;j&lt;&lt;std::endl;</span><br><span class="line">    &#125;;</span><br><span class="line">    func2();</span><br><span class="line">    </span><br><span class="line">    //与stl算法结合，找出a中大于3的一个元素</span><br><span class="line">    int x=3;</span><br><span class="line">    auto d=find_if(a.begin(),a.end(),</span><br><span class="line">        [x](int num)</span><br><span class="line">            &#123;return num&gt;x;&#125;);</span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;什么是lambda表达式？&quot;&gt;&lt;a href=&quot;#什么是lambda表达式？&quot; class=&quot;headerlink&quot; title=&quot;什么是lambda表达式？&quot;&gt;&lt;/a&gt;什么是lambda表达式？&lt;/h3&gt;&lt;p&gt;一个&lt;code&gt;lambda&lt;/code&gt;表达式表示
+      
+    
+    </summary>
+    
+      <category term="C++学习笔记" scheme="http://yourenit.top/categories/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C++" scheme="http://yourenit.top/tags/C/"/>
+    
+      <category term="新特性" scheme="http://yourenit.top/tags/%E6%96%B0%E7%89%B9%E6%80%A7/"/>
+    
+      <category term="编程" scheme="http://yourenit.top/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
+  
+</feed>
