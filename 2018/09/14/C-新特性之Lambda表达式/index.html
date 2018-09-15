@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="幽人&#39;s Blog">
 <meta property="og:description" content="什么是lambda表达式？一个lambda表达式表示以一个可以调用的代码单元。或者理解为一个匿名的内联函数。与任何函数类似，一个lambda具有返回类型、一个参数列表和一个函数体。与函数不同，lambda可能定义在函数内部。 为什么要有lambda表达式？我们知道，在STL所提供的算法中，往往有两个版本。其中一个版本表现最直观的的某种运算，第二个版本则表现出最泛化的演算流程，允许用户“以templ">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-15T15:03:35.181Z">
+<meta property="og:updated_time" content="2018-09-15T16:23:54.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++新特性之Lambda表达式">
 <meta name="twitter:description" content="什么是lambda表达式？一个lambda表达式表示以一个可以调用的代码单元。或者理解为一个匿名的内联函数。与任何函数类似，一个lambda具有返回类型、一个参数列表和一个函数体。与函数不同，lambda可能定义在函数内部。 为什么要有lambda表达式？我们知道，在STL所提供的算法中，往往有两个版本。其中一个版本表现最直观的的某种运算，第二个版本则表现出最泛化的演算流程，允许用户“以templ">
@@ -253,7 +253,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新：<time datetime="2018-09-15T15:03:35.181Z" itemprop="dateUpdated">2018-09-15 23:03:35</time>
+    最后更新：<time datetime="2018-09-15T16:23:54.800Z" itemprop="dateUpdated">2018-09-16 00:23:54</time>
 </span>
 
 
@@ -343,6 +343,30 @@
     
 
     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "aLHMzoojWe0h4eE372gx8GSo-gzGzoHsz",
+            appKey: "x3IyAEHMBrbwyBQnmK2eRXrn",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
 
 
 </article>
@@ -353,7 +377,7 @@
     <div class="footer-content">
         <span class="power">
             <i class="icon icon-lg icon-copyright"></i>
-            2017
+            2018
             <i class="icon icon-lg icon-heart"></i>
             <a href="http://yourenit.top">tomotoes.com</a>
             <br/>
