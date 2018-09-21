@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Haskell初步]]></title>
+    <url>%2FHaskell%E5%AD%A6%E4%B9%A0%2FHaskell%E5%88%9D%E6%AD%A5%2F</url>
+    <content type="text"><![CDATA[函数的定义和调用123456789//函数名 参数1 参数2 ... = 函数体doubleMe x=x+xdoubleUs x y= x*2 + y*2//可在其他函数中调用你编写的函数doubleUs x y = doubleMe x + doubleMe y//很符合我们数学中公式的组合f(x)=g(x)+h(x)+... Haskell中函数没有顺序，无论先声明doubleMe还是doubleUs都是一样的。 List123456789101112131415161718192021222324252627282930313233343536373839404142434445464748//定义，所有元素必须相同类型let lostNumber=[1,2,3,4]//两个list合并let lostNumber2=[5,6,7,8]lostNumber ++ lostNumber2//索引 !!lostNumber !!2 //2为下标//比较大小lostNumber &gt; lostNumber2 //返回False[2.1,3.1,4.1] &gt; [2,3,4] //返回TruelostNumber == lostNumber2 //返回False//常用搭配函数：head lostNumber //返回list的第一个元素last lostNumber //返回list的最后一个元素tail lostNumber //返回除去第一个元素之后的部分init lostNumber //返回除去最后一个元素之前的部分length lostNumber //返回list的长度null lostNumber //检查list是否为空，空则返回Truereverse lostNumber //将list反转take 3 lostNumber //返回list的前几个元素，3指定返回前3个元素drop 3 lostNumber //删除list前几个元素maximum lostNumber //返回list中最大的元素minimum lostNumber //返回list中最小的元素sum lostNumber //返回list所有元素之和profuct lostNumber //返回list中所有元素之积4 `elem` lostNumber //判断一个元素是否在一个list中[1..20] //定义一个从1到20的list[20,19..1] //[20..1]是不可以的//也可以是字符[&apos;a&apos;..&apos;z&apos;] //返回&quot;abcdefghijklmnopqrstuvwxyz&quot;[&apos;A&apos;..&apos;z&apos;] //返回&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz&quot;//设置步长[2,4..20] //返回[2,4,6,8,10,12,14,16,18,20]//不标明上限take 24 [13,26..] //用多少取多少[13.26..] //不停输出repeat接受一个值作为参数，返回一个仅包含该值的无限Listcycle则是接受一个list，并无限输出replicate 3 10 //得到包含3个元素相同的list 我们也可以表达数学中的集合：1S=&#123;2*x | x\in N,x\leq10&#125; 12[x*2 | x&lt;-[1..10]] //返回[2,4,6,8,10,12,14,16,18,20][x*2 | x&lt;-[1..10], x*2 &gt;= 12] //返回[12,14,16,18,20] Tuple123456fst (8,11) //返回一个序对的首项snd (8,11) //返回一个序对的尾项//不能用于三元组或四元组以上zip [1,2,3,4] [7,8,9] //zip用来生成一组序对的list//返回[(1,7),(2,8),(3,9)] 解决一个问题：如何取得所有三边长度皆为整数且小于等于10，周长为24的直角三角形？1let rightTriangles = [ (a,b,c) | c&lt;-[1..10], b&lt;-[1..c], a&lt;-[1..b], a^2 + b^2 == c^2,a+b+c==24]]]></content>
+      <categories>
+        <category>Haskell学习</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>Haskell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[C++新特性之Variadic Template]]></title>
     <url>%2FC-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2FC-%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8BVariadic-Template%2F</url>
     <content type="text"><![CDATA[可变参数模板的定义可变参数模板是至少有一个参数宝的模板，参数包则是可以接受零个或者更多模板实参的模板形参，其格式如下：123template &lt;class ...T&gt; class classname;template &lt;class ...T&gt; void func(T ...args); 其中T为模板参数包，args为函数参数包。 可变参数模板可以用任意数量的模板参数实例化：1234567template &lt;class... T&gt; class Myclass&#123;&#125;;Myclass&lt;&gt; t0; //T 不包含实参Myclass&lt;int&gt; t1; //T 包含一个实参，类型为intMyclass&lt;int,float&gt; t2; //T 包含两个实参，类型为int和float//模板参数包必须是模板参数列表中的最后一个形参。template &lt;typename... T,typename U&gt; struct Invalid; //错误 可变参数函数模板可以用任意数量的函数实参调用：12345678910template &lt;class... T&gt; void func(T... args);func(); //args不包含实参func(1); //包含一个实参，类型为intfunc(1,2.1); //包含两个实参，类型为int和double//与类模板不同，函数模板参数包不必是模板参数列表中的最后一个，它可以在列表早于所有能从函数实参推导的参数出现template &lt;class... T,class U&gt;void valid(U,T...); //正确valid(1.0,2,3,4); //推导U为double，T为&#123;int，int，int&#125; 包展开包展开的场所不同，产生的逗号分隔列表种类不同： 函数实参列表 12345func(&amp;args...); //展开成func(&amp;E1,&amp;E2,&amp;E3)func(++args...,n); //展开成func(++E1,++E2,++E3,n)func(n,++args); //展开成func(n,++E1,++E2,++E3)func(const_cast&lt;const Args*&gt;(&amp;args)...); // func(const_cast&lt;const E1*&gt;(&amp;X1), const_cast&lt;const E2*&gt;(&amp;X2), const_cast&lt;const E3*&gt;(&amp;X3))func(h(args...) + args...); // 展开成 func(h(E1,E2,E3) + E1, h(E1,E2,E3) + E2, h(E1,E2,E3) + E3) 有括号初始化器 12Class c1(&amp;args...); // 调用 Class::Class(&amp;E1, &amp;E2, &amp;E3)Class c2 = Class(n, ++args...); // 调用 Class::Class(n, ++E1, ++E2, ++E3); 花括号环绕的初始化器 12345template &lt;class... T&gt; void func(T... args)&#123; const int size=sizeof...(args); int res[size]=&#123;args...&#125;;&#125; 模板实参列表 1234567//包展开可以用于模板形参列表的任何位置，前提是模板拥有匹配展开的形参。template &lt;class A,class B,class... C&gt; void func(A arg1,B arg2,C... arg3)&#123; container&lt;A,B,C...&gt; t1; // 展开成 container&lt;A,B,E1,E2,E3&gt; container&lt;C...,A,B&gt; t2; // 展开成 container&lt;E1,E2,E3,A,B&gt; container&lt;A,C...,B&gt; t3; // 展开成 container&lt;A,E1,E2,E3,B&gt; &#125; 函数形参列表 123template&lt;typename ...Ts&gt; void f(Ts...) &#123;&#125;f(&apos;a&apos;, 1); // Ts... 展开成 void f(char, int)f(0.1); // Ts... 展开成 void f(double) 模板形参列表 1234template &lt;class ...T&gt; class Myclass&#123; template&lt;T... Values&gt; // 展开成无类型模板参数列表，例如 &lt;int, char, int(&amp;)[5]&gt;&#125;; Lambda捕获 12345template &lt;class ...T&gt;void func(T... args)&#123; auto g=[&amp;,args...]&#123;return h(args...);&#125; g();&#125; sizeof…运算符 基类指定符和成员初始化列表12345template&lt;class... Mixins&gt;class X : public Mixins... &#123; public: X(const Mixins&amp;... mixins) : Mixins(mixins)... &#123; &#125;&#125;; 实例1234567891011121314151617181920212223242526#include &lt;iostream&gt;using namespace std;void print()&#123; cout&lt;&lt;endl;&#125;template &lt;class T&gt; void print(const T&amp; t)&#123; cout&lt;&lt; t &lt;&lt;endl;&#125;template &lt;class First,class... Rest&gt;void print(const First&amp; first,const Rest&amp;... rest)&#123; cout&lt;&lt;first&lt;&lt;&quot;,&quot;; print(rest);&#125;int main()&#123; print(); print(1); print(10,20); print(100,200,300); print(&quot;first&quot;,2,&quot;third&quot;,3.14159);&#125; 实现C语言中的printf函数：12345678910111213141516171819202122232425#include &lt;iostream&gt; void tprintf(const char* format) // 基函数&#123; std::cout &lt;&lt; format;&#125; template&lt;typename T, typename... Targs&gt;void tprintf(const char* format, T value, Targs... Fargs) // 递归变参数函数&#123; for ( ; *format != &apos;\0&apos;; format++ ) &#123; if ( *format == &apos;%&apos; ) &#123; std::cout &lt;&lt; value; tprintf(format+1, Fargs...); // 递归调用 return; &#125; std::cout &lt;&lt; *format; &#125;&#125; int main()&#123; tprintf(&quot;% world% %\n&quot;,&quot;Hello&quot;,&apos;!&apos;,123); return 0;&#125;]]></content>
@@ -8,9 +20,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
+        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
-        <tag>编程</tag>
       </tags>
   </entry>
   <entry>
@@ -21,9 +33,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
+        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
-        <tag>编程</tag>
       </tags>
   </entry>
   <entry>
@@ -34,9 +46,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
+        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
-        <tag>编程</tag>
       </tags>
   </entry>
 </search>
