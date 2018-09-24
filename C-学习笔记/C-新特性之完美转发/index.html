@@ -124,20 +124,25 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="幽人&#39;s Blog">
-<meta property="og:url" content="http://yourenit.top/tags/C/index.html">
+  <meta name="description" content="在上一篇文章中，我们了解了什么是右值引用。 这篇文章则是了解C++11如何解决右值引用的一个实际问题：转发问题。 问题描述我们考虑一个例子：1234567891011121314void process_func(MySTring t)&amp;#123;&amp;#125;template &amp;lt;class T&amp;gt;void forward_func(T&amp;amp;&amp;amp; t)&amp;#123;    proc">
+<meta name="keywords" content="C++,新特性,编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++新特性之完美转发">
+<meta property="og:url" content="http://yourenit.top/C-学习笔记/C-新特性之完美转发/index.html">
 <meta property="og:site_name" content="幽人&#39;s Blog">
+<meta property="og:description" content="在上一篇文章中，我们了解了什么是右值引用。 这篇文章则是了解C++11如何解决右值引用的一个实际问题：转发问题。 问题描述我们考虑一个例子：1234567891011121314void process_func(MySTring t)&amp;#123;&amp;#125;template &amp;lt;class T&amp;gt;void forward_func(T&amp;amp;&amp;amp; t)&amp;#123;    proc">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-24T13:46:56.887Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="幽人&#39;s Blog">
+<meta name="twitter:title" content="C++新特性之完美转发">
+<meta name="twitter:description" content="在上一篇文章中，我们了解了什么是右值引用。 这篇文章则是了解C++11如何解决右值引用的一个实际问题：转发问题。 问题描述我们考虑一个例子：1234567891011121314void process_func(MySTring t)&amp;#123;&amp;#125;template &amp;lt;class T&amp;gt;void forward_func(T&amp;amp;&amp;amp; t)&amp;#123;    proc">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yourenit.top/tags/C/"/>
+  <link rel="canonical" href="http://yourenit.top/C-学习笔记/C-新特性之完美转发/"/>
 
 
 
@@ -147,7 +152,7 @@
   };
 </script>
 
-  <title>标签: C++ | 幽人's Blog</title>
+  <title>C++新特性之完美转发 | 幽人's Blog</title>
   
 
 
@@ -194,7 +199,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -239,7 +244,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
     <a href="/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
   </li>
@@ -319,193 +324,304 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>C++<small>标签</small>
-        </h1>
-      </div>
-
-      
-        
+  
+    <div class="reading-progress-bar"></div>
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yourenit.top/C-学习笔记/C-新特性之完美转发/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="幽人">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="幽人's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之完美转发/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之完美转发</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">C++新特性之完美转发
+              
+            
+          </h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-24T21:45:07+08:00"
-              content="2018-09-24" >
-          09-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
 
-    </header>
-  </article>
+            
+            
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-24 21:45:07 / 修改时间：21:46:56" itemprop="dateCreated datePublished" datetime="2018-09-24T21:45:07+08:00">2018-09-24</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/C-学习笔记/" itemprop="url" rel="index"><span itemprop="name">C++学习笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/C-学习笔记/C-新特性之完美转发/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/C-学习笔记/C-新特性之完美转发/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/C-学习笔记/C-新特性之完美转发/" class="leancloud_visitors" data-flag-title="C++新特性之完美转发">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/右值引用和移动构造函数/" itemprop="url">
-              
-                <span itemprop="name">右值引用和移动构造函数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-22T19:42:20+08:00"
-              content="2018-09-22" >
-          09-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
+        <p>在上一篇文章中，我们了解了什么是右值引用。</p>
+<p>这篇文章则是了解<code>C++11</code>如何解决右值引用的一个实际问题：转发问题。</p>
+<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>我们考虑一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void process_func(MySTring t)&#123;&#125;</span><br><span class="line"></span><br><span class="line">template &lt;class T&gt;</span><br><span class="line">void forward_func(T&amp;&amp; t)&#123;</span><br><span class="line">    process_func(t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    //以上篇右值引用实现的MyString类为测试对象</span><br><span class="line">    forward_func(MyString(&quot;Hello&quot;));</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从代码来看，我们的<code>forward_func</code>函数传入的参数是一个右值引用，那么<code>process_func</code>的参数是不是也是右值引用呢？让我们看一下结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Construct</span><br><span class="line">Copy Construct</span><br><span class="line">Destruct</span><br><span class="line">Destruct</span><br></pre></td></tr></table></figure></p>
+<p>从结果中，我们可以看到，构造临时变量之后，便执行了拷贝构造函数，也就是说，传进<code>process_func</code>的不是右值，而是左值。这显然不是我们想要的结果，我们希望<code>process_func</code>传入的参数也是右值，该怎么做？我们将需要从一个函数中的一个或者多个实参连同其类型完整的转发给其他函数，称之为“完美转发”。</p>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><p>我们如果要做到完美转发，该怎么做呢？<br><code>C++11</code>给出了我们答案：引入一条新语言规则——引用折叠，并结合新的模板推导规则来完成完美转发。</p>
+<p>引用折叠：</p>
+<table><br><thead><br><tr><br>  <th>折叠前</th><br>  <th>折叠后</th><br>  <th>注释</th><br></tr><br></thead><br><tbody><tr><br>  <td>A&amp; &amp;</td><br>  <td>A&amp;</td><br>  <td>指向左值引用的左值引用折叠/崩塌为左值引用</td><br></tr><br><tr><br>  <td>A&amp; &amp;&amp;</td><br>  <td>A&amp;</td><br>  <td>指向左值引用的右值引用折叠/崩塌为左值引用</td><br></tr><br><tr><br>  <td>A&amp;&amp; &amp;</td><br>  <td>A&amp;</td><br>  <td>指向右值引用的左值引用折叠/崩塌为左值引用</td><br></tr><br><tr><br>  <td>A&amp;&amp; &amp;&amp;</td><br>  <td>A&amp;&amp;</td><br>  <td>指向右值引用的右值引用折叠/崩塌为右值引用</td><br></tr><br></tbody></table>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之Variadic-Template（可变参数模板）/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之Variadic Template</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-21T00:41:55+08:00"
-              content="2018-09-21" >
-          09-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之Type-Alias、Template-Alias、noexcept、override、final/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之Type Alias、Template Alias、noexcept、override、final</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-19T20:49:13+08:00"
-              content="2018-09-19" >
-          09-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之Lambda表达式/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之Lambda表达式</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-14T12:28:37+08:00"
-              content="2018-09-14" >
-          09-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<p>从上表可以看出，当<code>forward_func</code>函数传入左值引用的时候，<code>process_func</code>的参数类型被折叠成左值引用，当<code>forward_func</code>函数传入右值引用的时候普，<code>process_func</code>的参数类型被折叠成右值引用。具体我们看下例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void process_func(MyString&amp;&amp; t)&#123;</span><br><span class="line">    cout&lt;&lt;&quot; rvalue ref&quot;&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">void process_func(MyString&amp; t)&#123;</span><br><span class="line">    cout&lt;&lt;&quot;lvalue ref&quot;&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;class T&gt;</span><br><span class="line">void forward_func(T&amp;&amp; t)&#123;</span><br><span class="line">    //cout&lt;&lt;typeid(t).name()&lt;&lt;endl;</span><br><span class="line">    //cout&lt;&lt;&quot;forward_value&quot;&lt;&lt;endl;</span><br><span class="line">    process_func(forward&lt;T&gt;(t));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    MyString str=&quot;World!&quot;;</span><br><span class="line">    forward_func(str);      //传入左值</span><br><span class="line"></span><br><span class="line">    forward_func(MyString(&quot;Hello&quot;));    //传入右值</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Construct</span><br><span class="line">Move Construct</span><br><span class="line">Destruct</span><br><span class="line">lvalue ref          //MyString str=&quot;World!&quot;;  forward_func(str);</span><br><span class="line">Construct</span><br><span class="line">rvalue ref          //forward_func(MyString(&quot;Hello&quot;)); </span><br><span class="line">Destruct</span><br><span class="line">Destruct</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
 
+    
+
+    
+    
+    
+	
+	<div>
+	
+	<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;"><i class="fa fa-paw"></i>感谢您的阅读<i class="fa fa-paw"></i></div>
+
+</div>
+	
+	</div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="幽人 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay.jpg" alt="幽人 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>幽人</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yourenit.top/C-学习笔记/C-新特性之完美转发/" title="C++新特性之完美转发">http://yourenit.top/C-学习笔记/C-新特性之完美转发/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          
+            <a href="/tags/新特性/" rel="tag"><i class="fa fa-tag"></i> 新特性</a>
+          
+            <a href="/tags/编程/" rel="tag"><i class="fa fa-tag"></i> 编程</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+               <div id="needsharebutton-postbottom">
+                 <span class="btn">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                 </span>
+               </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/C-学习笔记/右值引用和移动构造函数/" rel="next" title="右值引用和移动构造函数">
+                <i class="fa fa-chevron-left"></i> 右值引用和移动构造函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -526,8 +642,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -631,6 +756,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题解决"><span class="nav-number">2.</span> <span class="nav-text">问题解决</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -805,6 +946,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
 
   
 

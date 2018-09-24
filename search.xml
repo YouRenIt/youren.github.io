@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[C++新特性之完美转发]]></title>
+    <url>%2FC-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2FC-%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91%2F</url>
+    <content type="text"><![CDATA[在上一篇文章中，我们了解了什么是右值引用。 这篇文章则是了解C++11如何解决右值引用的一个实际问题：转发问题。 问题描述我们考虑一个例子：1234567891011121314void process_func(MySTring t)&#123;&#125;template &lt;class T&gt;void forward_func(T&amp;&amp; t)&#123; process_func(t);&#125;int main()&#123; //以上篇右值引用实现的MyString类为测试对象 forward_func(MyString(&quot;Hello&quot;)); return 0;&#125; 从代码来看，我们的forward_func函数传入的参数是一个右值引用，那么process_func的参数是不是也是右值引用呢？让我们看一下结果：1234ConstructCopy ConstructDestructDestruct 从结果中，我们可以看到，构造临时变量之后，便执行了拷贝构造函数，也就是说，传进process_func的不是右值，而是左值。这显然不是我们想要的结果，我们希望process_func传入的参数也是右值，该怎么做？我们将需要从一个函数中的一个或者多个实参连同其类型完整的转发给其他函数，称之为“完美转发”。 问题解决我们如果要做到完美转发，该怎么做呢？C++11给出了我们答案：引入一条新语言规则——引用折叠，并结合新的模板推导规则来完成完美转发。 引用折叠： 折叠前 折叠后 注释 A&amp; &amp; A&amp; 指向左值引用的左值引用折叠/崩塌为左值引用 A&amp; &amp;&amp; A&amp; 指向左值引用的右值引用折叠/崩塌为左值引用 A&amp;&amp; &amp; A&amp; 指向右值引用的左值引用折叠/崩塌为左值引用 A&amp;&amp; &amp;&amp; A&amp;&amp; 指向右值引用的右值引用折叠/崩塌为右值引用 从上表可以看出，当forward_func函数传入左值引用的时候，process_func的参数类型被折叠成左值引用，当forward_func函数传入右值引用的时候普，process_func的参数类型被折叠成右值引用。具体我们看下例：1234567891011121314151617181920212223void process_func(MyString&amp;&amp; t)&#123; cout&lt;&lt;&quot; rvalue ref&quot;&lt;&lt;endl;&#125;void process_func(MyString&amp; t)&#123; cout&lt;&lt;&quot;lvalue ref&quot;&lt;&lt;endl;&#125;template &lt;class T&gt;void forward_func(T&amp;&amp; t)&#123; //cout&lt;&lt;typeid(t).name()&lt;&lt;endl; //cout&lt;&lt;&quot;forward_value&quot;&lt;&lt;endl; process_func(forward&lt;T&gt;(t));&#125;int main()&#123; MyString str=&quot;World!&quot;; forward_func(str); //传入左值 forward_func(MyString(&quot;Hello&quot;)); //传入右值 return 0;&#125; 输出结果为：12345678ConstructMove ConstructDestructlvalue ref //MyString str=&quot;World!&quot;; forward_func(str);Constructrvalue ref //forward_func(MyString(&quot;Hello&quot;)); DestructDestruct]]></content>
+      <categories>
+        <category>C++学习笔记</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>新特性</tag>
+        <tag>编程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[右值引用和移动构造函数]]></title>
     <url>%2FC-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2F%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E5%92%8C%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%2F</url>
     <content type="text"><![CDATA[在了解右值引用之前，我们先复习什么左值、右值？什么是引用？ 左值、右值在C语言中，左值可以位于赋值语句的左侧，右值则不能。具体可以参考C值类别。 在C++中，每个表达式属于三种基本值之一：纯右值、亡值、左值。具体参考C++值类别。 在C++ Prime中，对左值和右值的区别做了一个简单的归纳： 当一个对象被用作右值的时候，用的是对象的值（内容）；当对象被用作左值的时候，用的是对象的身份（在内存中的位置）。 左值有持久的状态，而右值要么是字面常量，要么是表达式求值过程中创建的临时对象。 引用引用是为一个已经存在的对象或者函数起一个别名。并不是将这个对象或者函数拷贝给引用。通常用&amp;定义引用。1234int a=123;int &amp;b=a; //它相当于给a起个别名为bb=456; //对引用的操作实在与之绑定的对象上进行的 引用的注意事项1234int &amp;c=1; //错误，引用类型的初始值必须是一个对象const int &amp;d=2; //正确，d为一个常量引用double &amp;e=a; //错误引用类型必须是int类型对象 当我们复习完上面所有知识之后，我们来了解什么是左值引用、右值引用？ 左值引用左值引用用于对已经存在的对象起一个别名。1234567891011121314#include &lt;iostream&gt;#icnldue &lt;string&gt;using namespace std;int main()&#123; string s=&quot;Hello&quot;; string&amp; r1s; const string&amp;r2=s; r1+=&quot; World!&quot;; //可以修改s r2+=&quot; World!&quot;; //不可以修改，r2为常量引用&#125; 也可以用于函数调用实现引用传递：123456789101112131415#include &lt;iostream&gt;#include &lt;string&gt;using namespace std;void print(string&amp; str)&#123; str+=&quot; World!&quot;; cout&lt;&lt;str&lt;&lt;endl;&#125;int main()&#123; string str=&quot;Hello&quot;; print(str);&#125; 函数的返回值是左值引用时，函数调用表达式成为左值表达式。12345678910111213141516#include &lt;iostream&gt;#include &lt;string&gt;using namespace std;char&amp; print_char(string&amp; str,size_t n)&#123; return str.at(n);&#125;int main()&#123; string str=&quot;Hello&quot;; print(str,0)=&apos;C&apos;; //函数调用是左值，可以被赋值 cout&lt;&lt;str&lt;&lt;endl; //输出Cello&#125;//在C++中，我们常见的左值返回还有赋值、下标、解引用、和前置递增/递减运算符，他们的返回值都是可以被修改的。 但是，对于一些要求转换的表达式、字面常量或是返回右值的表达式，左值引用就无能为力了。123string &amp; print(string &amp; str)&#123; return str+&quot; world!&quot;; //编译器报错，非常量引用的初始值必须为左值&#125; 我们知道str+&quot; world!&quot;为右值，我们将返回类型改为常量类型，就不会报错。123const string &amp; print(string &amp; str)&#123; return str+&quot; world!&quot;; &#125; 我们调用一下，试试看：12const string&amp; str2=print(str);cout&lt;&lt;str2&lt;&lt;endl; 此时，我们发现，输出的结果是乱码，调试发现，str2中根本没有值。这是因为函数调用产生一个临时对象，引用则将绑定这个临时对象，当函数调用完毕将临时对象销毁，引用将失效，所以返回乱码。 那么问题该怎么解决呢？就函数来看，毕竟返回引用类型要比返回值类型要高效，不用将临时对象的值拷贝给新的对象，而是“偷了”临时对象的值。 C++11为我们则引入了一种新的类型————右值引用。 右值引用新标准中用&amp;&amp;来定义右值引用，右值引用指向的是临时对象，因此延长了临时对象的生存期。这种“偷”走临时变量的行为，被称为“移动语义”。123456789101112#include &lt;iostream&gt;#include &lt;string&gt;using namespace std;int main()&#123; string s1=&quot;Hello&quot;; string &amp;&amp; r=s1+s1; //s1+s1创建一个临时对象 r+=&quot; World!&quot;; cout&lt;&lt;r&lt;&lt;endl; //输出Hello Hello World!&#125; 在新标准中，我们还可以显式的将一个左值转换为对应的右值引用类型——move函数。123int i=10; int &amp;&amp; k=std::move(i);cout&lt;&lt;&amp;i&lt;&lt;&quot; &quot;&lt;&lt;&amp;k&lt;&lt;endl; //i和k的地址相同 既然我们可以延长临时对象的生存期，并减少对象的拷贝操作，我们在自己的类中如果也支持移动操作，那么也提高不少效率。 移动构造函数我们需要定义移动构造函数和移动赋值运算符。这两个成员类似于对应的拷贝操作，但它们是从给定的对象“窃取”资源而不是拷贝资源。 1234567891011121314151617181920212223242526272829303132333435363738394041424344#include &lt;iostream&gt;#include &lt;cstdlib&gt;#include &lt;string&gt;using namespace std;class MyString &#123;private: char* data; size_t len;public: MyString():data(nullptr),len(0)&#123;&#125; MyString(const char* p):data(new char[strlen(p)+1]),len(strlen(p))&#123; strcpy(data, p); cout &lt;&lt; &quot;Construct: &quot; &lt;&lt; ++cstr &lt;&lt; endl; &#125; //构造函数 MyString(const MyString&amp; str) :data(new char[strlen(str.data) + 1]), len(strlen(str.data)) &#123; strcpy(this-&gt;data, str.data); cout &lt;&lt; &quot;Copy Construct: &quot; &lt;&lt; ++cptr &lt;&lt; endl; &#125; //拷贝构造函数 ~MyString() &#123; delete data; cout &lt;&lt; &quot;Destruct: &quot; &lt;&lt; ++dstr &lt;&lt; endl; &#125;public: static int cstr; //构造函数调用次数 static int dstr; //析构函数调用次数 static int cptr; //拷贝构造函数调用次数 //static int mvtr; //移动构造函数调用次数&#125;;int MyString::cstr = 0;int MyString::dstr = 0;int MyString::cptr = 0;//int MyString::mvtr = 0;MyString GetStr() &#123; return MyString(&quot;Hello&quot;); &#125;int main()&#123; MyString str=MyStriung(&quot;Hello&quot;);&#125; 上面中的静态变量用来输出各种函数调用的次数。1234567891011121314在g++上的运行结果为：Construct: 1Copy Construct: 1Destruct: 1Copy Construct: 2Destruct: 2Destruct: 3在vs上的结果为：Construct: 1Copy Construct: 1Destruct: 1 vs将其优化了，用g++的-fno-elide-constructors参数就不会被优化。 可以看出，拷贝构造函数被调用了两次，一次是将构造的变量拷贝构造给临时值，用来做GetStr的返回值，另一次是由临时值构造出main函数中的变量str。 如果字符串的数据很大的话，那么花在拷贝上的时间比较大了，效率就会大大降低。如果我们将临时对象的值“偷”过来，那效率会有什么变化呢？123456789//我们在上述类中添加移动构造函数MyString(MyString &amp;&amp;str)&#123; len=str.len; this-&gt;data=str.data; str.len=0; str.data=nullptr;&#125;MyString GetStr()&#123; MyString str="Hello"; return str;&#125; 1234567运行结果为：Construct: 1Move Construct: 1Destruct: 1Move Construct: 2Destruct: 2Destruct: 3 从结果可以看到，没有执行拷贝构造函数，而是执行的是移动构造函数。虽然在此没有将临时值和mian函数中str的成员变量地址输出出来，但是他们的地址是相同的。这就省去了再申请内存和拷贝的时间，效率也提高了。]]></content>
@@ -8,9 +21,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
+        <tag>编程</tag>
       </tags>
   </entry>
   <entry>
@@ -33,9 +46,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
+        <tag>编程</tag>
       </tags>
   </entry>
   <entry>
@@ -46,9 +59,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
+        <tag>编程</tag>
       </tags>
   </entry>
   <entry>
@@ -59,9 +72,9 @@
         <category>C++学习笔记</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>C++</tag>
         <tag>新特性</tag>
+        <tag>编程</tag>
       </tags>
   </entry>
 </search>
