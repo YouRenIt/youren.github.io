@@ -122,20 +122,24 @@
 
 
 
-  <meta property="og:type" content="website">
+  <meta name="description" content="线程锁的封装线程锁的基本操作：1234561. 创建锁 int pthread_mutex_init(pthread_mutex_t*mutex, const pthread_mutexattr_t * attr);    attr：创建锁的属性。一般默认为NULL，分为以下几个属性：        * PTHREAD_MUTEX_TIMED_NP，这是缺省值，也就是普通锁。当一个线程加锁以后，其">
+<meta property="og:type" content="article">
 <meta property="og:title" content="幽人&#39;s Blog">
-<meta property="og:url" content="http://yourenit.top/tags/编程/index.html">
+<meta property="og:url" content="http://yourenit.top/uncategorized/线程锁的封装/index.html">
 <meta property="og:site_name" content="幽人&#39;s Blog">
+<meta property="og:description" content="线程锁的封装线程锁的基本操作：1234561. 创建锁 int pthread_mutex_init(pthread_mutex_t*mutex, const pthread_mutexattr_t * attr);    attr：创建锁的属性。一般默认为NULL，分为以下几个属性：        * PTHREAD_MUTEX_TIMED_NP，这是缺省值，也就是普通锁。当一个线程加锁以后，其">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-26T03:55:21.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="幽人&#39;s Blog">
+<meta name="twitter:description" content="线程锁的封装线程锁的基本操作：1234561. 创建锁 int pthread_mutex_init(pthread_mutex_t*mutex, const pthread_mutexattr_t * attr);    attr：创建锁的属性。一般默认为NULL，分为以下几个属性：        * PTHREAD_MUTEX_TIMED_NP，这是缺省值，也就是普通锁。当一个线程加锁以后，其">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yourenit.top/tags/编程/"/>
+  <link rel="canonical" href="http://yourenit.top/uncategorized/线程锁的封装/"/>
 
 
 
@@ -145,7 +149,7 @@
   };
 </script>
 
-  <title>标签: 编程 | 幽人's Blog</title>
+  <title> | 幽人's Blog</title>
   
 
 
@@ -192,7 +196,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -237,7 +241,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
     <a href="/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
   </li>
@@ -317,221 +321,279 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>编程<small>标签</small>
-        </h1>
-      </div>
-
-      
-        
+  
+    <div class="reading-progress-bar"></div>
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yourenit.top/uncategorized/线程锁的封装/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="幽人">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="幽人's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之完美转发/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之完美转发</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-24T21:45:07+08:00"
-              content="2018-09-24" >
-          09-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
 
-    </header>
-  </article>
+            
+            
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 11:09:46 / 修改时间：11:55:21" itemprop="dateCreated datePublished" datetime="2019-08-26T11:09:46+08:00">2019-08-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/uncategorized/线程锁的封装/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/uncategorized/线程锁的封装/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/uncategorized/线程锁的封装/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/右值引用和移动构造函数/" itemprop="url">
-              
-                <span itemprop="name">右值引用和移动构造函数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-22T19:42:20+08:00"
-              content="2018-09-22" >
-          09-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/Haskell学习/Haskell初步/" itemprop="url">
-              
-                <span itemprop="name">Haskell初步</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-21T16:15:30+08:00"
-              content="2018-09-21" >
-          09-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之Variadic-Template（可变参数模板）/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之Variadic Template</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-21T00:41:55+08:00"
-              content="2018-09-21" >
-          09-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之Type-Alias、Template-Alias、noexcept、override、final/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之Type Alias、Template Alias、noexcept、override、final</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-19T20:49:13+08:00"
-              content="2018-09-19" >
-          09-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/C-学习笔记/C-新特性之Lambda表达式/" itemprop="url">
-              
-                <span itemprop="name">C++新特性之Lambda表达式</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-14T12:28:37+08:00"
-              content="2018-09-14" >
-          09-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <h2 id="线程锁的封装"><a href="#线程锁的封装" class="headerlink" title="线程锁的封装"></a>线程锁的封装</h2><h3 id="线程锁的基本操作："><a href="#线程锁的基本操作：" class="headerlink" title="线程锁的基本操作："></a>线程锁的基本操作：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 创建锁 <span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span>*mutex, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> * attr)</span></span>;</span><br><span class="line">    attr：创建锁的属性。一般默认为<span class="literal">NULL</span>，分为以下几个属性：</span><br><span class="line">        * PTHREAD_MUTEX_TIMED_NP，这是缺省值，也就是普通锁。当一个线程加锁以后，其余请求锁的线程将形成一个等待队列，并在解锁后按优先级获得锁。这种锁策略保证了资源分配的公平性；</span><br><span class="line">        * PTHREAD_MUTEX_RECURSIVE_NP，嵌套锁，允许同一个线程对同一个锁成功获得多次，并通过多次unlock解锁。如果是不同线程请求，则在加锁线程解锁时重新竞争；</span><br><span class="line">        * PTHREAD_MUTEX_ERRORCHECK_NP，检错锁，如果同一个线程请求同一个锁，则返回EDEADLK，否则与PTHREAD_MUTEX_TIMED_NP类型动作相同。这样就保证当不允许多次加锁时不会出现最简单情况下的死锁；</span><br><span class="line">        * PTHREAD_MUTEX_ADAPTIVE_NP，适应锁，动作最简单的锁类型，仅等待解锁后重新竞争；</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.</span> 加锁 <span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>*mutex)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span> 解锁 <span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mutex)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4.</span> 尝试锁 <span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mutex)</span></span>; <span class="comment">//锁被占用返回EBUSY，而非等待</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5.</span> 锁销毁 <span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_destroy</span> <span class="params">(<span class="keyword">pthread_mutex_t</span> *mutex)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="线程锁的封装-1"><a href="#线程锁的封装-1" class="headerlink" title="线程锁的封装"></a>线程锁的封装</h3><h4 id="线程锁异常"><a href="#线程锁异常" class="headerlink" title="线程锁异常"></a>线程锁异常</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">YR_ThreadMutex_Exception</span> :</span> <span class="keyword">public</span> YR_Lock_Exception</span><br><span class="line">&#123;</span><br><span class="line">    YR_ThreadMutex_Exception(<span class="keyword">const</span> <span class="built_in">string</span> &amp;buffer) : YR_Lock_Exception(buffer)&#123;&#125;;</span><br><span class="line">    YR_ThreadMutex_Exception(<span class="keyword">const</span> <span class="built_in">string</span> &amp;buffer, <span class="keyword">int</span> err) : YR_Lock_Exception(buffer, err)&#123;&#125;;</span><br><span class="line">    ~YR_ThreadMutex_Exception() <span class="keyword">throw</span>() &#123;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="线程锁的定义"><a href="#线程锁的定义" class="headerlink" title="线程锁的定义"></a>线程锁的定义</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YR_ThreadMutex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	YR_ThreadMutex();</span><br><span class="line">    <span class="keyword">virtual</span> ~YR_ThreadMutex();</span><br><span class="line">    <span class="comment">//加锁</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">//解锁</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">//尝试锁</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">tryLock</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">pthread_mutex_t</span> _mutex;			<span class="comment">//创建线程锁</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>锁的初始化可以放在构造函数里，这里分为四步来初始化线程锁<code>_mutex</code>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">YR_ThreadMutex::YR_ThreadMutex()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> rc;</span><br><span class="line">    <span class="keyword">pthread_mutexattr_t</span> attr;					<span class="comment">//1. 创建线程锁属性对象</span></span><br><span class="line">    rc = pthread_mutexattr_init(&amp;attr);			<span class="comment">//初始化锁属性对象</span></span><br><span class="line">    assert(rc == <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//2. 将锁属性中的锁类型设为检错锁</span></span><br><span class="line">    rc = pthread_mutexattr_settype(&amp;attr, PTHREAD_MUTEX_ERRORCHECK);</span><br><span class="line">    assert(rc == <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//3. 初始化锁对象</span></span><br><span class="line">    rc = pthread_mutex_init(&amp;_mutex, &amp;attr);</span><br><span class="line">    assert(rc == <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//4. 销毁锁属性对象</span></span><br><span class="line">    rc = pthread_mutexattr_destroy(&amp;attr);</span><br><span class="line">    assert(rc == <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//如果操作不成功，则抛出异常</span></span><br><span class="line">    <span class="keyword">if</span>(rc != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> TC_ThreadMutex_Exception(<span class="string">"[TC_ThreadMutex::TC_ThreadMutex] pthread_mutexattr_init error"</span>, rc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>线程锁在析构函数中销毁：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">YR_ThreadMutex::~YR_ThreadMutex()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> rc = <span class="number">0</span>;</span><br><span class="line">    rc = pthread_mutex_destroy(&amp;_mutex);</span><br><span class="line">    <span class="keyword">if</span>(rc != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"[YR_ThreadMutex::~YR_ThreadMutex] pthread_mutex_destroy error:"</span> &lt;&lt; <span class="built_in">string</span>(strerror(rc)) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadMutex::lock() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> rc = pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">    <span class="keyword">if</span>(rc != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(rc == EDEADLK)		<span class="comment">//如果当前线程已经拥有线程锁</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> YR_ThreadMutex_Exception(<span class="string">"[YR_ThreadMutex::lock] pthread_mutex_lock dead lock error"</span>, rc);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> YR_ThreadMutex_Exception(<span class="string">"[YR_ThreadMutex::lock] pthread_mutex_lock error"</span>, rc);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadMutex::unlock() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> rc = pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">    <span class="keyword">if</span>(rc != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> YR_ThreadMutex_Exception(<span class="string">"[YR_ThreadMutex::unlock] pthread_mutex_unlock error"</span>, rc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="尝试锁"><a href="#尝试锁" class="headerlink" title="尝试锁"></a>尝试锁</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> YR_ThreadMutex::tryLock() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> rc = pthread_mutex_trylock(&amp;_mutex);</span><br><span class="line">    <span class="keyword">if</span>(rc != <span class="number">0</span> &amp;&amp; rc != EBUSY)		<span class="comment">//如果所占用则返回EBUSY</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(rc == EDEADLK)			<span class="comment">//如果当前线程已经拥有线程锁</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> YR_ThreadMutex_Exception(<span class="string">"[YR_ThreadMutex::tryLock] pthread_mutex_trylock dead lock error"</span>, rc);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> YR_ThreadMutex_Exception(<span class="string">"[YR_ThreadMutex::tryLock] pthread_mutex_trylock error"</span>, rc);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (rc == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
 
+    
+
+    
+    
+    
+	
+	<div>
+	
+	<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;"><i class="fa fa-paw"></i>感谢您的阅读<i class="fa fa-paw"></i></div>
+
+</div>
+	
+	</div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="幽人 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay.jpg" alt="幽人 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>幽人</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yourenit.top/uncategorized/线程锁的封装/" title="">http://yourenit.top/uncategorized/线程锁的封装/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+               <div id="needsharebutton-postbottom">
+                 <span class="btn">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                 </span>
+               </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/uncategorized/异常的封装/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -552,8 +614,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -655,6 +726,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程锁的封装"><span class="nav-number">1.</span> <span class="nav-text">线程锁的封装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程锁的基本操作："><span class="nav-number">1.1.</span> <span class="nav-text">线程锁的基本操作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程锁的封装-1"><span class="nav-number">1.2.</span> <span class="nav-text">线程锁的封装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程锁异常"><span class="nav-number">1.2.1.</span> <span class="nav-text">线程锁异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程锁的定义"><span class="nav-number">1.2.2.</span> <span class="nav-text">线程锁的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加锁"><span class="nav-number">1.2.3.</span> <span class="nav-text">加锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁"><span class="nav-number">1.2.4.</span> <span class="nav-text">解锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尝试锁"><span class="nav-number">1.2.5.</span> <span class="nav-text">尝试锁</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -829,6 +916,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
 
   
 
