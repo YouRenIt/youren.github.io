@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "pkjlceblccvcyw07cakelhmqe93f2j7sbjn1yiv5"
+    });
+  daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.1',
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <meta name="description" content="线程池的设计线程池，顾名思义就是一个存放了已经创建好的线程资源的池子，当有任务提交给线程池的时候，池中的某一个线程就会执行该任务，执行完毕之后就会回到池子中等待下次执行任务。  从上图中我们可以看到，实现一个线程池应该具备下列要素：  线程队列：提交的任务缓冲在这里 线程数量管理功能 任务拒绝策略 队列长度  线程安全队列的封装线程安全队列的封装 线程池的定义1234567891011121314">
+<meta name="keywords" content="-C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池的设计">
+<meta property="og:url" content="http://yourenit.top/uncategorized/线程池的设计/index.html">
+<meta property="og:site_name" content="幽人&#39;s Blog">
+<meta property="og:description" content="线程池的设计线程池，顾名思义就是一个存放了已经创建好的线程资源的池子，当有任务提交给线程池的时候，池中的某一个线程就会执行该任务，执行完毕之后就会回到池子中等待下次执行任务。  从上图中我们可以看到，实现一个线程池应该具备下列要素：  线程队列：提交的任务缓冲在这里 线程数量管理功能 任务拒绝策略 队列长度  线程安全队列的封装线程安全队列的封装 线程池的定义1234567891011121314">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="e:/Blog/Hexo/source/_posts/picture/TIM图片20190903114333.png">
+<meta property="og:updated_time" content="2019-09-03T03:58:58.156Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线程池的设计">
+<meta name="twitter:description" content="线程池的设计线程池，顾名思义就是一个存放了已经创建好的线程资源的池子，当有任务提交给线程池的时候，池中的某一个线程就会执行该任务，执行完毕之后就会回到池子中等待下次执行任务。  从上图中我们可以看到，实现一个线程池应该具备下列要素：  线程队列：提交的任务缓冲在这里 线程数量管理功能 任务拒绝策略 队列长度  线程安全队列的封装线程安全队列的封装 线程池的定义1234567891011121314">
+<meta name="twitter:image" content="e:/Blog/Hexo/source/_posts/picture/TIM图片20190903114333.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yourenit.top/uncategorized/线程池的设计/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>线程池的设计 | 幽人's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">幽人's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yourenit.top/uncategorized/线程池的设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="幽人">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="幽人's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">线程池的设计
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-30 11:05:56" itemprop="dateCreated datePublished" datetime="2019-08-30T11:05:56+08:00">2019-08-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-03 11:58:58" itemprop="dateModified" datetime="2019-09-03T11:58:58+08:00">2019-09-03</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/uncategorized/线程池的设计/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/uncategorized/线程池的设计/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/uncategorized/线程池的设计/" class="leancloud_visitors" data-flag-title="线程池的设计">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="线程池的设计"><a href="#线程池的设计" class="headerlink" title="线程池的设计"></a>线程池的设计</h3><p>线程池，顾名思义就是一个存放了已经创建好的线程资源的池子，当有任务提交给线程池的时候，池中的某一个线程就会执行该任务，执行完毕之后就会回到池子中等待下次执行任务。</p>
+<p><img src="E:\Blog\Hexo\source\_posts\picture\TIM图片20190903114333.png" alt=""></p>
+<p>从上图中我们可以看到，实现一个线程池应该具备下列要素：</p>
+<ul>
+<li>线程队列：提交的任务缓冲在这里</li>
+<li>线程数量管理功能</li>
+<li>任务拒绝策略</li>
+<li>队列长度</li>
+</ul>
+<h4 id="线程安全队列的封装"><a href="#线程安全队列的封装" class="headerlink" title="线程安全队列的封装"></a>线程安全队列的封装</h4><p><a href="">线程安全队列的封装</a></p>
+<h4 id="线程池的定义"><a href="#线程池的定义" class="headerlink" title="线程池的定义"></a>线程池的定义</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YR_ThreadPool</span> :</span> <span class="keyword">public</span> YR_ThreadLock	</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	YR_ThreadPool();</span><br><span class="line">	<span class="keyword">virtual</span> ~YR_ThreadPool();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//线程池的初始化</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> num)</span></span>;</span><br><span class="line">	<span class="comment">//启动所有线程</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//终止线程池</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">terminate</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//获取线程数量</span></span><br><span class="line">	<span class="keyword">size_t</span> getThreadNum() <span class="keyword">const</span>;</span><br><span class="line">	<span class="comment">//获取线程池的任务数量</span></span><br><span class="line">	<span class="keyword">size_t</span> getThreadJobNum() <span class="keyword">const</span>;</span><br><span class="line">	<span class="comment">//添加任务</span></span><br><span class="line">	bool Execute(std::function&lt;void()&gt; tf);</span><br><span class="line">	<span class="comment">//清除线程池</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//通知等待在任务队列的线程醒来</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">notifyT</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//等待所有工作全部结束</span></span><br><span class="line">	<span class="comment">//millsecond表示等待的时间</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">waitForAllDone</span><span class="params">(<span class="keyword">int</span> millsecond = <span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//线程中的工作线程</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">YR_ThreadWorker</span> :</span> <span class="keyword">public</span> YR_Thread</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		YR_ThreadWorker(YR_ThreadPool *pool);</span><br><span class="line">		~YR_ThreadWorker();</span><br><span class="line">		<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;			<span class="comment">//实现逻辑</span></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">terminate</span><span class="params">()</span></span>;			<span class="comment">//线程终止</span></span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		YR_ThreadPool*  _tpool;</span><br><span class="line">		<span class="keyword">bool</span> _bTerminate;			<span class="comment">//是否结束线程</span></span><br><span class="line">	&#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	YR_ThreadQueue&lt;<span class="built_in">std</span>::function&lt;<span class="keyword">void</span>()&gt;&gt; _jobqueue;			<span class="comment">//任务队列</span></span><br><span class="line">	YR_ThreadLock	_tmutex;			<span class="comment">//任务队列的锁</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;YR_ThreadWorker*&gt;	_jobthread;			<span class="comment">//工作队列</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">set</span>&lt;YR_ThreadWorker*&gt;		_busthread;			<span class="comment">//繁忙线程</span></span><br><span class="line">	<span class="keyword">bool</span> _bAllDone;										<span class="comment">//是否所有任务执行完毕</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="线程池的实现"><a href="#线程池的实现" class="headerlink" title="线程池的实现"></a>线程池的实现</h4><h5 id="构造与析构"><a href="#构造与析构" class="headerlink" title="构造与析构"></a>构造与析构</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">YR_ThreadPool::YR_ThreadPool()</span><br><span class="line">    :bAllDone(<span class="literal">true</span>)</span><br><span class="line">&#123;&#125;</span><br><span class="line">YR_ThreadPool::~YR_ThreadPool()</span><br><span class="line">&#123;</span><br><span class="line">    terminate();</span><br><span class="line">    clear();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="线程池的初始化"><a href="#线程池的初始化" class="headerlink" title="线程池的初始化"></a>线程池的初始化</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::init(<span class="keyword">size_t</span> num)</span><br><span class="line">&#123;</span><br><span class="line">    terminate();</span><br><span class="line">    <span class="function">Lock <span class="title">sync</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line">    clear();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i=<span class="number">0</span>; i&lt;num; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        _jobthread.push_back(<span class="keyword">new</span> ThreadWorker(<span class="keyword">this</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="启动所有线程"><a href="#启动所有线程" class="headerlink" title="启动所有线程"></a>启动所有线程</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::start()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">Lock <span class="title">sync</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> it = _jobthread.begin();</span><br><span class="line">    <span class="keyword">while</span>(it != _jobthread.end())</span><br><span class="line">    &#123;</span><br><span class="line">        (*it)-&gt;start();</span><br><span class="line">        ++it;</span><br><span class="line">    &#125;</span><br><span class="line">    _bAllDone = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="终止线程池"><a href="#终止线程池" class="headerlink" title="终止线程池"></a>终止线程池</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::terminate()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">Lock <span class="title">sync</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> it = _jobthread.begin();</span><br><span class="line">    <span class="keyword">while</span>(it != _jobthread.end())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>((*it)-&gt;isAlive())</span><br><span class="line">        &#123;</span><br><span class="line">            (*it)-&gt;terminate();</span><br><span class="line">            (*it)-&gt;getThreadControl.join();		<span class="comment">//线程回收</span></span><br><span class="line">        &#125;</span><br><span class="line">        ++it;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="获取线程数数量"><a href="#获取线程数数量" class="headerlink" title="获取线程数数量"></a>获取线程数数量</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> YR_ThreadPool::getThreadNum()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function">Lock <span class="title">sync</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> _jobthread.size();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="获取线程池的任务数量"><a href="#获取线程池的任务数量" class="headerlink" title="获取线程池的任务数量"></a>获取线程池的任务数量</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> YR_ThreadPool::getThreadJobNum()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> _jobqueue.size();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="添加任务"><a href="#添加任务" class="headerlink" title="添加任务"></a>添加任务</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::Execute(<span class="built_in">std</span>::function&lt;<span class="keyword">void</span>()&gt; tf)</span><br><span class="line">&#123;</span><br><span class="line">	_jobqueue.push_back(<span class="built_in">std</span>::move(tf));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="清除线程池"><a href="#清除线程池" class="headerlink" title="清除线程池"></a>清除线程池</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::clear()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">auto</span> it = _jobthread.begin();</span><br><span class="line">    <span class="keyword">while</span>(it != _jobthread.end())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span>(*it);</span><br><span class="line">        ++it;</span><br><span class="line">    &#125;</span><br><span class="line">    _jobthread.clear();</span><br><span class="line">    _busthread.clear();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="通知等待在工作队列的线程醒来"><a href="#通知等待在工作队列的线程醒来" class="headerlink" title="通知等待在工作队列的线程醒来"></a>通知等待在工作队列的线程醒来</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void YR_ThreadPool::notifyT()</span><br><span class="line">&#123;</span><br><span class="line">	_jobqueue.notifyT();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="线程运行逻辑"><a href="#线程运行逻辑" class="headerlink" title="线程运行逻辑"></a>线程运行逻辑</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::ThreadWorker::run()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//调用初始化部分</span></span><br><span class="line">    <span class="keyword">auto</span> pst = _tpool-&gt;get();</span><br><span class="line">    <span class="keyword">if</span>(pst)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            pst();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> ( ... )</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//调用处理部分</span></span><br><span class="line">    <span class="keyword">while</span> (!_bTerminate)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> pfw = _tpool-&gt;get(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span>(pfw)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">try</span></span><br><span class="line">            &#123;</span><br><span class="line">                pfw();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span> ( ... )</span><br><span class="line">            &#123;</span><br><span class="line">            &#125;</span><br><span class="line">            _tpool-&gt;idle(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//结束</span></span><br><span class="line">    _tpool-&gt;<span class="built_in">exit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="工作线程终止"><a href="#工作线程终止" class="headerlink" title="工作线程终止"></a>工作线程终止</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> YR_ThreadPool::ThreadWorker::terminate()</span><br><span class="line">&#123;</span><br><span class="line">    _bTerminate = <span class="literal">true</span>;</span><br><span class="line">    _tpool-&gt;notifyT();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="等待所有工作全部结束"><a href="#等待所有工作全部结束" class="headerlink" title="等待所有工作全部结束"></a>等待所有工作全部结束</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> YR_ThreadPool::waitForAllDone(<span class="keyword">int</span> millsecond)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">Lock <span class="title">sync</span><span class="params">(_tmutex)</span></span>;</span><br><span class="line">start1:</span><br><span class="line">    <span class="comment">//任务队列和繁忙线程都是空的</span></span><br><span class="line">    <span class="keyword">if</span> (finish())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//永远等待</span></span><br><span class="line">    <span class="keyword">if</span>(millsecond &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        _tmutex.timedWait(<span class="number">1000</span>);</span><br><span class="line">        <span class="keyword">goto</span> start1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int64_t</span> iNow= YR_Common::nowToms();</span><br><span class="line">    <span class="keyword">int</span> m       = millsecond;</span><br><span class="line">start2:</span><br><span class="line">    <span class="keyword">bool</span> b = _tmutex.timedWait(millsecond);</span><br><span class="line">    <span class="comment">//完成处理了</span></span><br><span class="line">    <span class="keyword">if</span>(finish())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    millsecond = max((<span class="keyword">int64_t</span>)<span class="number">0</span>, m  - (YR_Common::nowToms() - iNow));</span><br><span class="line">    <span class="keyword">goto</span> start2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="线程存储"><a href="#线程存储" class="headerlink" title="线程存储"></a>线程存储</h4><p>“防止任务在共享资源上发生冲突的第二种方式是根除对变量的共享”。线程局部存储为每一个访问此变量的线程<strong>提供一个此变量独立的副本</strong>，线程可以修改此变量，而不会影响到其他线程。</p>
+<h5 id="线程私有数据的封装"><a href="#线程私有数据的封装" class="headerlink" title="线程私有数据的封装"></a>线程私有数据的封装</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadData</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ThreadData()&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="title">ThreadData</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">static</span> <span class="title">T</span>* <span class="title">makeThreadData</span>()&#123;</span> <span class="keyword">return</span> <span class="keyword">new</span> T;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>YR_ThreadPool</code>类中添加<code>pthread_key_t  g_key</code>属性。</p>
+<p><code>YR_ThreadPool</code>类中添加<code>static void destructor(void *p);</code>方法，用来销毁线程数据。</p>
+<h5 id="线程池中添加线程私有数据的操作方法"><a href="#线程池中添加线程私有数据的操作方法" class="headerlink" title="线程池中添加线程私有数据的操作方法"></a>线程池中添加线程私有数据的操作方法</h5><p>线程存储的操作方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Returns 0 on success, or a positive error number on error</span></span><br><span class="line">int pthread_key_create (pthread_key_t *key, void (*destructor)(void *));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Returns 0 on success, or a positive error number on error</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_key_delete</span> <span class="params">(<span class="keyword">pthread_key_t</span> key)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Returns 0 on success, or a positive error number on error</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_setspecific</span> <span class="params">(<span class="keyword">pthread_key_t</span> key, <span class="keyword">const</span> <span class="keyword">void</span> *value)</span></span>;</span><br><span class="line"><span class="comment">//该函数将value的值（不是内容）与key相关联。用pthread_setspecific为一个键指定新的线程数据时，线程必须先释放原有的线程数据用以回收空间。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Returns pointer, or NULL if no thread-specific data is associated with key</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">pthread_getspecific</span> <span class="params">(<span class="keyword">pthread_key_t</span> key)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>原理参考：<a href="https://blog.csdn.net/caoyan_12727/article/details/52280604" target="_blank" rel="noopener">linux线程私有数据详解</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setThreadData</span><span class="params">(ThreadData *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//释放原有的线程数据</span></span><br><span class="line">    YR_ThreadPool::ThreadData *pOld = getThreadData();</span><br><span class="line">    <span class="keyword">if</span>(pOld != <span class="literal">NULL</span> &amp;&amp; pOld != p)</span><br><span class="line">        <span class="keyword">delete</span> pOld;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ret = pthread_setspecific(g_key, (<span class="keyword">void</span>*)p);</span><br><span class="line">    <span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> YR_ThreadPool_Exception(<span class="string">"[YR_ThreadPool::setThreadData] pthread_setspecific error"</span>,ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setThreadData</span><span class="params">(<span class="keyword">pthread_key_t</span> pkey, ThreadData *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//释放原有的线程数据</span></span><br><span class="line">    YR_ThreadPool::ThreadData *pOld = getThreadData(pkey);</span><br><span class="line">    <span class="keyword">if</span>(pOld != <span class="literal">NULL</span> &amp;&amp; pOld != p)</span><br><span class="line">        <span class="keyword">delete</span> pOld;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ret = pthread_setspecific(pkey, (<span class="keyword">void</span> *)p);</span><br><span class="line">    <span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> YR_ThreadPool_Exception(<span class="string">"[YR_ThreadPool::setThreadData] pthread_setspecific error"</span>, ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> ThreadData* <span class="title">getThreadData</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (ThreadData*)pthread_getspecific(g_key);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> ThreadData* <span class="title">getThreadData</span><span class="params">(<span class="keyword">pthread_key_t</span> pkey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (ThreadData*)pthread_getspecific(pkey);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//析构函数</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">destructor</span><span class="params">(<span class="keyword">void</span> *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ThreadData* ttd = (ThreadData*)p;</span><br><span class="line">    <span class="keyword">delete</span> ttd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="key的初始化"><a href="#key的初始化" class="headerlink" title="key的初始化"></a>key的初始化</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KeyInitialize</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//初始化key</span></span><br><span class="line">	KeyInitialize()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> ret = pthread_key_create(&amp;YR_ThreadPool::g_key, YR_ThreadPool::destructor);</span><br><span class="line">		<span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">throw</span> YR_ThreadPool_Exception(<span class="string">"[YR_ThreadPool::KeyInitialize] pthread_key_create error"</span>, ret);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//释放key</span></span><br><span class="line">    ~KeyInitialize()</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_key_delete(YR_ThreadPool::g_key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>YR_ThreadPool</code>添加<code>static KeyInitialize g_key_initialize</code>属性。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	
+	<div>
+	
+	<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;"><i class="fa fa-paw"></i>感谢您的阅读<i class="fa fa-paw"></i></div>
+
+</div>
+	
+	</div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="幽人 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay.jpg" alt="幽人 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>幽人</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yourenit.top/uncategorized/线程池的设计/" title="线程池的设计">http://yourenit.top/uncategorized/线程池的设计/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> -C++</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+               <div id="needsharebutton-postbottom">
+                 <span class="btn">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                 </span>
+               </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/uncategorized/线程队列的封装/" rel="next" title="线程队列的封装">
+                <i class="fa fa-chevron-left"></i> 线程队列的封装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/uncategorized/常用函数的封装/" rel="prev" title="常用函数的封装">
+                常用函数的封装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.png"
+                alt="幽人" />
+            
+              <p class="site-author-name" itemprop="name">幽人</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yourenit" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="wccccc7878@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/u013635579" target="_blank" title="CSDN"><i class="fa fa-fw fa-arrows-alt"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+		  
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的设计"><span class="nav-number">1.</span> <span class="nav-text">线程池的设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程安全队列的封装"><span class="nav-number">1.1.</span> <span class="nav-text">线程安全队列的封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的定义"><span class="nav-number">1.2.</span> <span class="nav-text">线程池的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的实现"><span class="nav-number">1.3.</span> <span class="nav-text">线程池的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#构造与析构"><span class="nav-number">1.3.1.</span> <span class="nav-text">构造与析构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池的初始化"><span class="nav-number">1.3.2.</span> <span class="nav-text">线程池的初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动所有线程"><span class="nav-number">1.3.3.</span> <span class="nav-text">启动所有线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#终止线程池"><span class="nav-number">1.3.4.</span> <span class="nav-text">终止线程池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取线程数数量"><span class="nav-number">1.3.5.</span> <span class="nav-text">获取线程数数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取线程池的任务数量"><span class="nav-number">1.3.6.</span> <span class="nav-text">获取线程池的任务数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加任务"><span class="nav-number">1.3.7.</span> <span class="nav-text">添加任务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#清除线程池"><span class="nav-number">1.3.8.</span> <span class="nav-text">清除线程池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通知等待在工作队列的线程醒来"><span class="nav-number">1.3.9.</span> <span class="nav-text">通知等待在工作队列的线程醒来</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程运行逻辑"><span class="nav-number">1.3.10.</span> <span class="nav-text">线程运行逻辑</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#工作线程终止"><span class="nav-number">1.3.11.</span> <span class="nav-text">工作线程终止</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等待所有工作全部结束"><span class="nav-number">1.3.12.</span> <span class="nav-text">等待所有工作全部结束</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程存储"><span class="nav-number">1.4.</span> <span class="nav-text">线程存储</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#线程私有数据的封装"><span class="nav-number">1.4.1.</span> <span class="nav-text">线程私有数据的封装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池中添加线程私有数据的操作方法"><span class="nav-number">1.4.2.</span> <span class="nav-text">线程池中添加线程私有数据的操作方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#key的初始化"><span class="nav-number">1.4.3.</span> <span class="nav-text">key的初始化</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">幽人</span>
+
+  
+
+  
+</div>
+
+
+
+
+ 
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.1</div>
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src=“https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js”></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'aLHMzoojWe0h4eE372gx8GSo-gzGzoHsz',
+        appKey: 'x3IyAEHMBrbwyBQnmK2eRXrn',
+        placeholder: '请在此评论...',
+        avatar:'mm',
+        meta:guest,
+        pageSize:'10' || 10,
+        visitor: true
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  
+<!-- 背景-->
+<script>
+class Circle {
+    //创建对象
+    //以一个圆为对象
+    //设置随机的 x，y坐标，r半径，_mx，_my移动的距离
+    //this.r是创建圆的半径，参数越大半径越大
+    //this._mx,this._my是移动的距离，参数越大移动
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.r = Math.random() * 10 ;
+        this._mx = Math.random() ;
+        this._my = Math.random() ;
+    }
+    //canvas 画圆和画直线
+    //画圆就是正常的用canvas画一个圆
+    //画直线是两个圆连线，为了避免直线过多，给圆圈距离设置了一个值，距离很远的圆圈，就不做连线处理
+    drawCircle(ctx) {
+        ctx.beginPath();
+        //arc() 方法使用一个中心点和半径，为一个画布的当前子路径添加一条弧。
+        ctx.arc(this.x, this.y, this.r, 0, 360)
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(204, 204, 204, 0.3)';
+        ctx.fill();
+    }
+    drawLine(ctx, _circle) {
+        let dx = this.x - _circle.x;
+        let dy = this.y - _circle.y;
+        let d = Math.sqrt(dx * dx + dy * dy)
+        if (d < 150) {
+            ctx.beginPath();
+            //开始一条路径，移动到位置 this.x,this.y。创建到达位置 _circle.x,_circle.y 的一条线：
+            ctx.moveTo(this.x, this.y);   //起始点
+            ctx.lineTo(_circle.x, _circle.y);   //终点
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(204, 204, 204, 0.3)';
+            ctx.stroke();
+        }
+    }
+    // 圆圈移动
+    // 圆圈移动的距离必须在屏幕范围内
+    move(w, h) {
+        this._mx = (this.x < w && this.x > 0) ? this._mx : (-this._mx);
+        this._my = (this.y < h && this.y > 0) ? this._my : (-this._my);
+        this.x += this._mx / 2;
+        this.y += this._my / 2;
+    }
+}
+//鼠标点画圆闪烁变动
+class currentCirle extends Circle {
+    constructor(x, y) {
+        super(x, y)
+    }
+    drawCircle(ctx) {
+        ctx.beginPath();
+        //注释内容为鼠标焦点的地方圆圈半径变化
+        //this.r = (this.r < 14 && this.r > 1) ? this.r + (Math.random() * 2 - 1) : 2;
+        this.r = 8;
+        ctx.arc(this.x, this.y, this.r, 0, 360);
+        ctx.closePath();
+        //ctx.fillStyle = 'rgba(0,0,0,' + (parseInt(Math.random() * 100) / 100) + ')'
+        ctx.fillStyle = 'rgba(255, 77, 54, 0.3)'
+        ctx.fill();
+    }
+}
+//更新页面用requestAnimationFrame替代setTimeout
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let w = canvas.width = canvas.offsetWidth;
+let h = canvas.height = canvas.offsetHeight;
+let circles = [];
+let current_circle = new currentCirle(0, 0)
+let draw = function () {
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < circles.length; i++) {
+        circles[i].move(w, h);
+        circles[i].drawCircle(ctx);
+        for (j = i + 1; j < circles.length; j++) {
+            circles[i].drawLine(ctx, circles[j])
+        }
+    }
+    if (current_circle.x) {
+        current_circle.drawCircle(ctx);
+        for (var k = 1; k < circles.length; k++) {
+            current_circle.drawLine(ctx, circles[k])
+        }
+    }
+    requestAnimationFrame(draw)
+}
+let init = function (num) {
+    for (var i = 0; i < num; i++) {
+        circles.push(new Circle(Math.random() * w, Math.random() * h));
+    }
+    draw();
+}
+window.addEventListener('load', init(60));
+window.onmousemove = function (e) {
+    e = e || window.event;
+    current_circle.x = e.clientX;
+    current_circle.y = e.clientY;
+}
+window.onmouseout = function () {
+    current_circle.x = null;
+    current_circle.y = null;
+};
+</script>
